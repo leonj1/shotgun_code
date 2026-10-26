@@ -40,7 +40,7 @@ jobs:
             package: true
             artifact_path: build/bin/shotgun-code.app.zip
 
-    runs-on: ${{ matrix.os }}
+    runs-on: "${{ (matrix.os) == 'ubuntu-latest' && fromJSON('[\"self-hosted\",\"linux\",\"x64\"]') || (matrix.os) == 'windows-latest' && fromJSON('[\"self-hosted\",\"windows\",\"x64\"]') || (matrix.os) == 'macos-latest' && fromJSON('[\"self-hosted\",\"macOS\",\"ARM64\"]') || (matrix.os) }}"
 
     steps:
       - name: Checkout main branch
@@ -67,7 +67,7 @@ jobs:
 # ─────────────────────── RELEASE ────────────────────────
   release:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
 
     steps:
       - name: Download release artifacts
